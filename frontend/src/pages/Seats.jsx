@@ -112,15 +112,20 @@ function Seats() {
           </div>
         </div>
 
-        {/* Confirm */}
-        {selectedSeats.length > 0 && (
-          <button
-            onClick={handleBooking}
-            className="mt-8 bg-pink-600 hover:bg-pink-700 px-8 py-3 rounded-lg transition"
-          >
-            Confirm Booking ({selectedSeats.length})
-          </button>
-        )}
+{/* Confirm */}
+{selectedSeats.length > 0 && (
+  <div className="mt-10 flex flex-col items-center gap-4">
+    <div className="text-lg font-semibold">
+      Selected Seats: {selectedSeats.length}
+    </div>
+    <button
+      onClick={handleBooking}
+      className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition"
+    >
+      Confirm Booking
+    </button>
+  </div>
+)}
 
       </div>
     </div>

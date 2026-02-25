@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Seats from "./pages/Seats";
 import Shows from "./pages/Shows";
 import MyBookings from "./pages/MyBookings";
+import Admin from "./pages/Admin";
 
 <Route path="/seats/:showId" element={<Seats />} />
 
@@ -14,7 +15,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/shows/:movieId" element={<Shows />} />
       <Route path="/seats/:showId" element={<Seats />} />
-      
+      <Route path="/admin" element={<Admin />} />
       <Route path="/my-bookings" element={<MyBookings />} />
     </Routes>
   );

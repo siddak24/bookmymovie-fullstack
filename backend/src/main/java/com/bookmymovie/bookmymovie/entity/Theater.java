@@ -1,9 +1,15 @@
 package com.bookmymovie.bookmymovie.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "theaters")
@@ -22,6 +28,6 @@ public class Theater {
     private String city;
     private String address;
 
-    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
-    private List<Show> shows;
+    //@OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
+    //private List<Show> shows;
 }

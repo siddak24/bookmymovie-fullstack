@@ -1,12 +1,16 @@
 package com.bookmymovie.bookmymovie.controller;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.bookmymovie.bookmymovie.dto.ShowResponseDTO;
 import com.bookmymovie.bookmymovie.entity.Show;
 import com.bookmymovie.bookmymovie.repository.ShowRepository;
-
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/shows")
@@ -18,11 +22,10 @@ public class ShowController {
         this.showRepository = showRepository;
     }
 
-    // 🔹 Get all shows for a movie
-    @GetMapping("/movie/{movieId}")
+// 🔹 Get all shows for a movie
+@GetMapping("/movie/{movieId}")
 public List<ShowResponseDTO> getShowsByMovie(@PathVariable Long movieId) {
-
-    return showRepository.findByMovieId(movieId)
+    return showRepository.findByMovieIdAndShowTimeAfter(movieId, LocalDateTime.now())
             .stream()
             .map(show -> new ShowResponseDTO(
                     show.getId(),

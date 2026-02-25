@@ -2,65 +2,57 @@ package com.bookmymovie.bookmymovie.service.impl;
 
 import java.time.LocalDateTime;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bookmymovie.bookmymovie.entity.Booking;
-import com.bookmymovie.bookmymovie.entity.Seat;
-import com.bookmymovie.bookmymovie.entity.SeatStatus;
-import com.bookmymovie.bookmymovie.entity.User;
-import com.bookmymovie.bookmymovie.exception.ResourceNotFoundException;
-import com.bookmymovie.bookmymovie.repository.BookingRepository;
-import com.bookmymovie.bookmymovie.repository.SeatRepository;
+import com.bookmymovie.bookmymovie.entity.*;
+import com.bookmymovie.bookmymovie.repository.*;
 import com.bookmymovie.bookmymovie.service.BookingService;
 
-import jakarta.persistence.OptimisticLockException;
 @Service
 public class BookingServiceImpl implements BookingService {
-
+    
     private final SeatRepository seatRepository;
     private final BookingRepository bookingRepository;
+    private final UserRepository userRepository;
 
     public BookingServiceImpl(SeatRepository seatRepository,
-                              BookingRepository bookingRepository) {
+                              BookingRepository bookingRepository,
+                              UserRepository userRepository) {
         this.seatRepository = seatRepository;
         this.bookingRepository = bookingRepository;
+        this.userRepository = userRepository;
     }
 
-   @Override
-@Transactional
-public Booking bookSeat(Long seatId) {
-
-    try {
-
-        User user = (User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+    @Override
+    @Transactional
+    public Booking bookSeat(Long seatId) {
 
         Seat seat = seatRepository.findById(seatId)
-                .orElseThrow(() -> new ResourceNotFoundException("Seat not found"));
+                .orElseThrow(() -> new RuntimeException("Seat not found"));
 
         if (seat.getStatus() == SeatStatus.BOOKED) {
-            throw new RuntimeException("Seat already booked!");
+            throw new RuntimeException("Seat already booked");
         }
-
+        // 🔐 Get logged-in user
+        Authentication authentication =
+            SecurityContextHolder.getContext().getAuthentication();
+        
+        User user = (User) authentication.getPrincipal();
+        
+        System.out.println("Auth name: " + authentication.getName());
+        // Mark seat booked
         seat.setStatus(SeatStatus.BOOKED);
 
-        Booking booking = Booking.builder()
-                .user(user)
-                .bookingTime(LocalDateTime.now())
-                .totalAmount(seat.getPrice())
-                .show(seat.getShow())
-                .build();
+        // Create booking
+        Booking booking = new Booking();
+        booking.setUser(user);
+        booking.setShow(seat.getShow());
+        booking.setBookingTime(LocalDateTime.now());
+        booking.setTotalAmount(seat.getPrice());
 
-        bookingRepository.save(booking);
-
-        return booking;
-
-    } catch (OptimisticLockException e) {
-        throw new RuntimeException("Seat was booked by another user. Try again.");
+        return bookingRepository.save(booking);
     }
-}
 }
