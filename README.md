@@ -1,100 +1,106 @@
-BookMyMovie – Full Stack Movie Booking System
-About This Project
+🎬 BookMyMovie – Full Stack Movie Booking System
+Overview
 
-This is a full stack movie ticket booking system that I built to understand how real-world backend systems work beyond simple CRUD operations.
+BookMyMovie is a full stack movie ticket booking system built to simulate how a real-world theatre booking platform works internally.
 
-The goal of this project was not just to build a UI, but to deeply understand:
+The focus of this project was backend system design, authentication flow, database relationships, and handling real-world edge cases like concurrent seat booking.
 
-Authentication using JWT
+The frontend is built to interact fully with the backend APIs and simulate a production-like workflow.
 
-Role-based access control
+🧱 System Architecture
 
-Database relationships
+The system is built using:
 
-Concurrency issues like double booking
-
-Transaction handling
-
-Revenue calculation logic
-
-Full frontend–backend integration
-
-I focused mainly on backend architecture while also building a working frontend to simulate a real product.
-
-🛠 Tech Stack
 Backend
 
 Spring Boot
 
 Spring Security
 
-JWT Authentication
+JWT Authentication (Stateless)
 
 Spring Data JPA (Hibernate)
 
 MySQL
 
-Optimistic Locking using @Version
+Optimistic Locking for concurrency control
 
 Frontend
 
 React (Vite)
 
-React Router
-
 Axios
+
+React Router
 
 Tailwind CSS
 
-🔐 Features
-User Side
+The backend follows layered architecture:
 
-Register & Login using JWT
+Controller layer
 
-View movies
+Service layer
 
-View shows (expired shows are automatically filtered)
+Repository layer
 
-Theatre-style seat layout
+Security layer (JWT Filter + SecurityConfig)
 
-See seat prices before booking
+🔐 Authentication & Security
 
-Book seats
+The application uses stateless authentication using JWT.
 
-View booking history
+Flow:
 
-Double booking prevention using optimistic locking
+User logs in → server validates credentials.
 
-Admin Side
+JWT token is generated and returned.
 
-Role-based access (ADMIN)
+Every subsequent request must send the token.
 
-Create movies
+JWT Filter validates token and sets SecurityContext.
 
-Create shows
+Backend extracts logged-in user from SecurityContext.
 
-Automatic seat generation when show is created
+Role-based access control is implemented:
 
-View revenue per show (total bookings + earnings)
+USER → booking access
 
-🧠 Key Backend Concepts Implemented
-1. Stateless Authentication
+ADMIN → movie & show management + revenue
 
-The app uses JWT, so every request must send a token.
-The backend extracts the user from SecurityContext and attaches it to bookings.
+🎟 Booking Workflow
 
-2. Optimistic Locking
+Booking logic includes:
 
-To prevent race conditions (two users booking the same seat at the same time), I used:
+Seat selection via theatre-style layout
+
+Seat status validation
+
+Transactional booking method
+
+User attached to booking via SecurityContext
+
+Foreign key integrity enforcement
+
+To prevent double booking, optimistic locking is implemented:
 
 @Version
 private Integer version;
 
-This ensures that only one booking succeeds if concurrent updates happen.
+If two users try to book the same seat simultaneously, one request fails safely.
 
-3. Proper Entity Relationships
+📊 Revenue System
 
-Entities used:
+Admin can:
+
+View total bookings per show
+
+View total revenue per show
+
+Revenue is calculated using custom JPQL aggregation queries.
+
+🗄 Database Model
+
+Entities:
 
 User
 
@@ -106,7 +112,7 @@ Seat
 
 Booking
 
-Relationships include:
+Key relationships:
 
 One Movie → Many Shows
 
@@ -114,54 +120,67 @@ One Show → Many Seats
 
 One User → Many Bookings
 
-I also handled foreign key issues and relationship mapping (mappedBy) correctly.
+Booking linked to Show and User
 
-4. Revenue Calculation
+Past shows are automatically filtered based on show time.
 
-Admin can view:
+Seats are auto-generated when a show is created.
 
-Total bookings per show
+🚀 Features Implemented
+User
 
-Total revenue per show
+Register & Login
 
-Using custom JPQL queries.
+View movies and shows
 
-🗄 Database Structure
+View only upcoming shows
 
-Main Tables:
+Select seats
 
-users
+View seat prices before confirmation
 
-movies
+Book seats
 
-shows
+View booking history
 
-seats
+Admin
 
-bookings
+Create movies
 
-The system ensures:
+Create shows
 
-Seat status updates properly
+Automatic seat generation
 
-Foreign keys are maintained
+View revenue per show
 
-Bookings are linked to logged-in users
+🧠 What This Project Demonstrates
 
-What I Learned From This Project
+Understanding of stateless authentication
 
-How Spring Security actually works internally
+Deep knowledge of Spring Security flow
 
-Difference between getPrincipal() and getName()
+Proper use of SecurityContext
 
-How JWT filters populate SecurityContext
+Handling concurrency with optimistic locking
 
-Why HTTP is stateless
+Clean entity relationship mapping
 
-How to prevent concurrency bugs
+Debugging real database and mapping issues
 
-Handling real debugging issues (FK constraints, mapping errors, auth bugs)
+Full frontend-backend integration
 
-Structuring backend services properly
+This project was built to move beyond CRUD applications and explore real backend system behavior.
 
-This project helped me move from just writing code to actually understanding backend system behavior.
+📌 Future Improvements
+
+Payment integration
+
+Booking cancellation & refund simulation
+
+Dockerization
+
+Deployment
+
+Unit & integration tests
+
+Performance optimization
