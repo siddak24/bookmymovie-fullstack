@@ -1,17 +1,17 @@
-🎬 BookMyMovie – Full Stack Movie Booking System
-Overview
+**🎬 BookMyMovie – Full Stack Movie Booking System**
+**Overview**
 
 BookMyMovie is a full stack movie ticket booking system built to simulate how a real-world theatre booking platform works internally.
 
 The focus of this project was backend system design, authentication flow, database relationships, and handling real-world edge cases like concurrent seat booking.
 
 The frontend is built to interact fully with the backend APIs and simulate a production-like workflow.
-
-🧱 System Architecture
+____________________________________________________________________________________________________________________________________________________________________________________________________
+**🧱 System Architecture**
 
 The system is built using:
 
-Backend
+**Backend**
 
 Spring Boot
 
@@ -25,7 +25,7 @@ MySQL
 
 Optimistic Locking for concurrency control
 
-Frontend
+**Frontend**
 
 React (Vite)
 
@@ -34,6 +34,7 @@ Axios
 React Router
 
 Tailwind CSS
+_____________________________________________________________________________________________________________________________________________________________________________________________________
 
 The backend follows layered architecture:
 
@@ -44,8 +45,9 @@ Service layer
 Repository layer
 
 Security layer (JWT Filter + SecurityConfig)
+____________________________________________________________________________________________________________________________________________________________________________________________________
 
-🔐 Authentication & Security
+**🔐 Authentication & Security**
 
 The application uses stateless authentication using JWT.
 
@@ -66,8 +68,9 @@ Role-based access control is implemented:
 USER → booking access
 
 ADMIN → movie & show management + revenue
+____________________________________________________________________________________________________________________________________________________________________________________________________
 
-🎟 Booking Workflow
+**🎟 Booking Workflow**
 
 Booking logic includes:
 
@@ -83,12 +86,13 @@ Foreign key integrity enforcement
 
 To prevent double booking, optimistic locking is implemented:
 
-@Version
-private Integer version;
+_@Version
+private Integer version;_
 
 If two users try to book the same seat simultaneously, one request fails safely.
 
-📊 Revenue System
+____________________________________________________________________________________________________________________________________________________________________________________________________
+**📊 Revenue System**
 
 Admin can:
 
@@ -98,9 +102,10 @@ View total revenue per show
 
 Revenue is calculated using custom JPQL aggregation queries.
 
-🗄 Database Model
+____________________________________________________________________________________________________________________________________________________________________________________________________
+**🗄 Database Model**
 
-Entities:
+**Entities:**
 
 User
 
@@ -112,7 +117,7 @@ Seat
 
 Booking
 
-Key relationships:
+**Key relationships:**
 
 One Movie → Many Shows
 
@@ -126,7 +131,8 @@ Past shows are automatically filtered based on show time.
 
 Seats are auto-generated when a show is created.
 
-🚀 Features Implemented
+____________________________________________________________________________________________________________________________________________________________________________________________________
+**🚀 Features Implemented**
 User
 
 Register & Login
@@ -153,7 +159,8 @@ Automatic seat generation
 
 View revenue per show
 
-🧠 What This Project Demonstrates
+____________________________________________________________________________________________________________________________________________________________________________________________________
+**🧠 What This Project Demonstrates**
 
 Understanding of stateless authentication
 
@@ -171,7 +178,8 @@ Full frontend-backend integration
 
 This project was built to move beyond CRUD applications and explore real backend system behavior.
 
-📌 Future Improvements
+____________________________________________________________________________________________________________________________________________________________________________________________________
+**📌 Future Improvements**
 
 Payment integration
 
@@ -184,3 +192,4 @@ Deployment
 Unit & integration tests
 
 Performance optimization
+____________________________________________________________________________________________________________________________________________________________________________________________________
